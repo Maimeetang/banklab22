@@ -1,4 +1,11 @@
-// [Missing Code 1] Include header file.
+#include<iostream>
+#include<string>
+#include<ctime>
+#include<cstdlib>
+#include<vector>
+#include<iomanip>
+
+using namespace std;
   
 int main(){
 	srand(time(0));
