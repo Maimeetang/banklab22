@@ -54,6 +54,7 @@ Unit::Unit(string t,string n){
 	}
 	hp = hpmax;	
 	guard_on = false;
+	dodge_on = false;
 	equipment = NULL;
 }
 
@@ -74,18 +75,27 @@ void Unit::showStatus(){
 
 void Unit::newTurn(){
 	guard_on = false; 
+	dodge_on = false;
 }
 
 int Unit::beAttacked(int oppatk){
-	int dmg;
-	if(oppatk > def){
-		dmg = oppatk-def;	
-		if(guard_on) dmg = dmg/3;
-	}	
-	hp -= dmg;
-	if(hp <= 0){hp = 0;}
-	
-	return dmg;	
+	int dmg = oppatk-def;
+	if(dmg < 0) dmg = 0;
+	if(guard_on == true){
+		dmg = dmg/3;
+		hp = hp-dmg;
+	}else{
+		hp = hp-dmg;
+	}
+	if(dodge_on == true){
+		int x = rand()%100;
+		if(x < 50){
+			dmg = 0;
+		}else{
+			dmg = dmg*2;
+		}
+	}
+	return dmg;
 }
 
 int Unit::attack(Unit &opp){
@@ -106,6 +116,14 @@ void Unit::guard(){
 bool Unit::isDead(){
 	if(hp <= 0) return true;
 	else return false;
+}
+
+int Unit::ultimateAttack(Unit &opp){
+	return opp.beAttacked(atk*2);
+}
+
+void Unit::dodge(){
+	dodge_on = true;
 }
 
 void drawScene(char p_action,int p,char m_action,int m){
